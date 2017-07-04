@@ -1,80 +1,82 @@
 #include <string>
 #include <vector>
 
-
+struct move{
+	move(int start, int dest, bool possible);
+	~move();
+	int _start;
+	int _dest;
+};
+typedef struct move move;
 
 class ChessPiece{
 	public:
-		ChessPiece();
+		ChessPiece(std::string name1, std::string name2, int current_position, int colour);
 		virtual ~ChessPiece();
-		virtual  display() const = 0; 
-		virtual void possible_moves(std::vector<int> &);
-
+		void display() const; 
+		virtual void possible_moves(std::vector<move> &, const Board &) const = 0;
+		void update_captured(bool new_captured);
+		void update_position(int new_position);
+		std::string get_name();
 	private:
 		std::string _name;
 		int _current_position;
+		bool _captured = false;
+		int _colour; //-1 for white, 1 for black
 };
 
-class Pawn: public ChessPiece{
+class Pawn:  public ChessPiece{
 	public:
-		Pawn();
+		Pawn(int current_position, int colour);
 		~Pawn();
-		void display() const override;
-		void possible_moves(std::vector<int> &) override;
+		void possible_moves(std::vector<move> &, const Board &) const override;
 };
 
 class Rook: public ChessPiece{
 	public:
-		Rook();
+		Rook(int current_position, int colour);
 		~Rook();
-		void display() const override;
-		void possible_moves(std::vector<int> &) override;
+		void possible_moves(std::vector<move> &, const Board &) const override;
 };
 
 class Horse: public ChessPiece{
 	public:
-		Horse();
+		Horse(int current_position, int colour);
 		~Horse();
-		void display() const override;
-		void possible_moves(std::vector<int> &) override;
+		void possible_moves(std::vector<move> &, const Board &) const override;
 };
 
 class Bishop: public ChessPiece{
 	public:
-		Bishop();
+		Bishop(int current_position, int colour);
 		~Bishop();
-		void display() const override;
-		void possible_moves(std::vector<int> &) override;
+		void possible_moves(std::vector<move> &, const Board &) const override;
 };
 
 class Queen: public ChessPiece{
 	public:
-		Queen();
+		Queen(int current_position, int colour);
 		~Queen();
-		void display() const override;
-		void possible_moves(std::vector<int> &) override;
+		void possible_moves(std::vector<move> &, const Board &) const override;
 };
 
 class King: public ChessPiece{
 	public:
-		King();
+		King(int current_position, int colour);
 		~King();
-		void display() const override;
-		void possible_moves(std::vector<int> &) override;
+		void possible_moves(std::vector<move> &, const Board &) const override;
 };
 
 class EmptySpace: public ChessPiece{
 	public:
-		EmptySpace();
+		EmptySpace(int current_position);
 		~EmptySpace();
-		void display() const override;
-		void possible_moves(std::vector<int> &) override;
+		void possible_moves(std::vector<move> &, const Board &) const override;
 };
 
 class Marker: public ChessPiece{
 	public:
-		Marker();
+		Marker(int current_position, std::string mark);
 		~Marker();
-		void display() const override;
-		void possible_moves(std::vector<int> &) override;
+		void possible_moves(std::vector<move> &, const Board &) const override;
 };

@@ -5,7 +5,7 @@
 
 Board::Board(int orientation) : _orientation(orientation){
 	//inititalize the board vector, sadly this requires a bit of hard coded setting
-	
+
 }
 
 Board::~Board(){}
@@ -15,7 +15,7 @@ void Board::print_board(){
 	//print board for user as white orientation
 	if(_orientation == 0){
 		for(int i = 0; i < _pieces.size(); i++){
-			std::cout << _pieces[i] -> display() << " ";
+			_pieces[i] -> display();
 			if(i-1 % 9 == 0){
 				std::cout << "\n \n";
 			}
@@ -24,7 +24,7 @@ void Board::print_board(){
 	//print board for user as black orientation
 	else{
 		for(int i = 80; i >= 0; i--){
-			std::cout << _pieces[i] -> display() << " ";
+			_pieces[i] -> display();
 			if(i-1 % 9 == 0){
 				std::cout << "\n \n";
 			}

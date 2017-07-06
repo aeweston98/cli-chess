@@ -5,7 +5,7 @@
 
 Board::Board(int orientation) : _orientation(orientation){
 	//inititalize the board vector, sadly this requires a bit of hard coded setting
-
+	
 }
 
 Board::~Board(){}

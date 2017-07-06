@@ -30,6 +30,9 @@ class Pawn:  public ChessPiece{
 		Pawn(int current_position, int colour);
 		~Pawn();
 		void possible_moves(std::vector<move> &, const Board &) const override;
+		void set_convert(bool convert){_convert_pawn = convert};
+	private:
+		bool _convert_pawn = false;
 };
 
 class Rook: public ChessPiece{

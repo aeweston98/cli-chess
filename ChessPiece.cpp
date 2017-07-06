@@ -53,38 +53,91 @@ void ChessPiece::display() const {
 }
 
 void Pawn::possible_moves(std::vector<move> &moves, const Board &current_board){
-	if(_current_position < 63){
-		if(current_board[_current_position+(9*_colour)] -> get_name == "-"){
+	if(_current_position <= 71 && _current_position >= 9){
+		if(current_board.get_board()[_current_position+(9*_colour)] -> get_name == "-"){
 			move temp1 (_current_position, _current_position+(9*_colour));
 			moves.push_back(temp1);
 		}
-		if(current_board[_current_position+(8*_colour)] -> get_name() != "-"){
+		if(current_board.get_board()[_current_position+(8*_colour)] -> get_name() != "-"){
 			move temp2 (_current_position, _current_position+(8*_colour));
 			moves.push_back(temp2);
 		}
-		if(current_board[_current_position+(10*_colour)] -> get_name() != "-"){
+		if(current_board.get_board()[_current_position+(10*_colour)] -> get_name() != "-"){
 			move temp3 (_current_position, _current_position+(10*_colour));
 			moves.push_back(temp3);
 		}
-		return;
-	}
-	else if(){
-		move temp1 (_current_position, _current_position+(9*_colour));
-		moves.push_back(temp1);
-		move temp2 (_current_position, _current_position+(8*_colour));
-		moves.push_back(temp2);
-		move temp3 (_current_position, _current_position+(10*_colour));
-		moves.push_back(temp3);
-
-		//do something to convert the pawn
-
-		return;
 	}
 	else{
 		//this should never occur since the pawn will be converted at this point
 		//but in case it does, there are no possible moves
 		return;
 	}
+
+	if((_current_position <= 17 && _current_position >= 9) || (_current_position >= 63 && _current_position <= 71)){
+		current_board.get_board()[_current_position] -> set_convert(true);
+	}
+}
+
+void Rook::possible_moves(std::vector<move> &moves, const Board &current_board){
+	int i = 1;
+	//check left
+	while(_current_position - (i*_colour) >= 0 && _current_position - (i*_colour) <= 80){
+		move temp (_current_position, _current_position - (i*_colour));
+		moves.push_back(temp);
+		
+		if(current_board.get_board()[_current_position - (i*_colour)] -> get_name == "-"){
+			i++;
+		}
+		else{
+			i=1;
+			break;
+		}
+	}
+
+	//check right
+	while(_current_position + (i*_colour) >= 0 && _current_position + (i*_colour) <= 80){
+		move temp (_current_position, _current_position + (i*_colour));
+		moves.push_back(temp);
+
+		if(current_board.get_board()[_current_position + (i*_colour)] -> get_name == "-"){
+			i++;
+		}
+		else{
+			i=1;
+			break;
+		}
+	}
+	//check down
+	while(_current_position - (i*9*_colour) >= 0 && _current_position - (i*9*_colour) <= 80){
+		move temp (_current_position, _current_position - (i*9*_colour));
+		moves.push_back(temp);
+		
+		if(current_board.get_board()[_current_position - (i*9*_colour)] -> get_name == "-"){
+			i++;
+		}
+		else{
+			i=1;
+			break;
+		}
+	}
+
+	//check up
+	while(_current_position + (i*9*_colour) >= 0 && _current_position + (i*9*_colour) <= 80){
+		move temp (_current_position, _current_position + (i*9*_colour));
+		moves.push_back(temp);
+		
+		if(current_board.get_board()[_current_position + (i*9*_colour)] -> get_name == "-"){
+			i++;
+		}
+		else{
+			i=1;
+			break;
+		}
+	}
+}
+
+void Bishop::possible_moves(std::vector<move> &moves, const Board &current_board){
+
 }
 
 

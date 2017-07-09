@@ -42,7 +42,10 @@ std::string ChessPiece::get_name(){
 	return _name1;
 }
 
-//should replace these inidivual display functions using templates
+int ChessPiece::get_colour(){
+	return _colour;
+}
+
 void ChessPiece::display() const {
 	if(_colour == 0){
 		std::cout << _name1 << " ";
@@ -52,17 +55,43 @@ void ChessPiece::display() const {
 	}
 }
 
+int ChessPiece::check_move_validity(const Board &current_board, int direction, int distance) const{
+	int check_pos = _colour;
+
+	// decide on direction
+	switch(direction){
+
+	}
+
+	//check within board boundaries
+
+	if(current_board.get_board()[check_pos] -> get_name() == "-"){
+		return 0;
+	}
+	else if(current_board.get_board()[check_pos] -> get_colour == _colour){
+		return 1;
+	}
+	else{ //it is an opposing teams piece
+		return 2;
+	}
+}
+
+
+//implement check empty and check same team
+
+
+
 void Pawn::possible_moves(std::vector<move> &moves, const Board &current_board){
 	if(_current_position <= 71 && _current_position >= 9){
 		if(current_board.get_board()[_current_position+(9*_colour)] -> get_name == "-"){
 			move temp1 (_current_position, _current_position+(9*_colour));
 			moves.push_back(temp1);
 		}
-		if(current_board.get_board()[_current_position+(8*_colour)] -> get_name() != "-"){
+		if(current_board.get_board()[_current_position+(8*_colour)] -> get_name() != "-" && current_board.get_board()[_current_position+(8*_colour)] -> get_colour() != _colour ){
 			move temp2 (_current_position, _current_position+(8*_colour));
 			moves.push_back(temp2);
 		}
-		if(current_board.get_board()[_current_position+(10*_colour)] -> get_name() != "-"){
+		if(current_board.get_board()[_current_position+(10*_colour)] -> get_name() != "-" && current_board.get_board()[_current_position+(10*_colour)] -> get_colour() != _colour){
 			move temp3 (_current_position, _current_position+(10*_colour));
 			moves.push_back(temp3);
 		}
@@ -138,6 +167,33 @@ void Rook::possible_moves(std::vector<move> &moves, const Board &current_board){
 
 void Bishop::possible_moves(std::vector<move> &moves, const Board &current_board){
 
+}
+
+void Queen::possible_moves(std::vector<move> &moves, const Board &current_board){
+
+}
+
+
+void King::possible_moves(std::vector<move> &moves, const Board &current_board){
+	bool safe_move = false;
+	while(safe_move == false){
+		//decide all possible moves
+		if(_current_position - (i*9*_colour) >= 0 && _current_position - (i*9*_colour) <= 80){
+			move temp1 (_current_position, _current_position+(9*_colour));
+			moves.push_back(temp1);
+		}
+		if(_current_position - (i*9*_colour) >= 0 && _current_position - (i*9*_colour) <= 80){
+			move temp2 (_current_position, _current_position+(8*_colour));
+			moves.push_back(temp2);
+		}
+		if(_current_position - (i*9*_colour) >= 0 && _current_position - (i*9*_colour) <= 80){
+			move temp3 (_current_position, _current_position+(10*_colour));
+			moves.push_back(temp3);
+		}
+
+
+		//check if the move is valid
+	}
 }
 
 

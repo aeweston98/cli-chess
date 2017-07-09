@@ -18,6 +18,8 @@ class ChessPiece{
 		void update_captured(bool new_captured);
 		void update_position(int new_position);
 		std::string get_name();
+		int get_colour();
+		virtual int check_move_validity(const Board &current_board, int direction, int distance) const;
 	private:
 		std::string _name;
 		int _current_position;
@@ -47,6 +49,7 @@ class Horse: public ChessPiece{
 		Horse(int current_position, int colour);
 		~Horse();
 		void possible_moves(std::vector<move> &, const Board &) const override;
+		int check_move_validity() const override;
 };
 
 class Bishop: public ChessPiece{
@@ -75,6 +78,8 @@ class EmptySpace: public ChessPiece{
 		EmptySpace(int current_position);
 		~EmptySpace();
 		void possible_moves(std::vector<move> &, const Board &) const override;
+	private:
+		int _colour = 0;
 };
 
 class Marker: public ChessPiece{
@@ -82,4 +87,6 @@ class Marker: public ChessPiece{
 		Marker(int current_position, std::string mark);
 		~Marker();
 		void possible_moves(std::vector<move> &, const Board &) const override;
+	private:
+		int _colour = 0;
 };

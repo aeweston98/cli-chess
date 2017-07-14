@@ -20,7 +20,7 @@ class ChessPiece{
 		void update_position(int new_position);
 		std::string get_name();
 		int get_colour();
-		virtual int check_move_validity(const Board &current_board, int direction, int distance) const;
+		move& check_move_validity(const Board &current_board, int direction, int distance) const;
 	private:
 		std::string _name;
 		int _current_position;
@@ -50,7 +50,7 @@ class Horse: public ChessPiece{
 		Horse(int current_position, int colour);
 		~Horse();
 		void possible_moves(std::vector<move> &, const Board &) const override;
-		int check_move_validity() const override;
+		move& check_horse_move_validity(const Board &current_board, int direction) const;
 };
 
 class Bishop: public ChessPiece{

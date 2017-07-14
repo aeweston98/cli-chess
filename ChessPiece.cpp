@@ -51,21 +51,18 @@ void ChessPiece::display() const {
 		std::cout << _name1 << " ";
 	}
 	else{
-		std::cout << _name2<< " "; 
+		std::cout << _name2 << " "; 
 	}
 }
 
 /* 
-	Direction Definition (applies to horses too)
+	Direction Definition (does not apply to horses)
 	From the reference of the white player
 	 1 2 3
 	  \|/
 	4 - - 5
 	  /|\
 	 6 7 8
-
-	 Return values for this function:
-	 1 - 
 */
 
 move& ChessPiece::check_move_validity(const Board &current_board, int direction, int distance) const{
@@ -127,6 +124,84 @@ move& ChessPiece::check_move_validity(const Board &current_board, int direction,
 	}
 	move return_move(_current_position, check_pos,validity_code);
 	return return_move;
+}
+
+
+//Direction for horse moves go in clockwise direction starting from two forward, one left
+
+move& Horse::check_horse_move_validity(const Board &current_board, int direction) const{
+	int check_pos = _current_position;
+	int expl_pos = _current_position;
+	int validity_code = 0;
+
+	// decide on direction
+	//check inside the switch whether the move will cause us to wrap around the board
+	switch(direction){
+		case 1:
+			if(_current_position % 9 != 0){
+				check_pos += (_colour * -19);
+				validity_code = 1;
+			}
+			break;
+		case 2:
+			if((_current_position + 1) % 9 != 0){
+				check_pos += (_colour * -17);
+				validity_code = 1;
+			}
+			break;
+		case 3:
+			if((_current_position + 1) % 9 != 0 && (_current_position + 2) % 9 != 0){
+				check_pos += (_colour * -7);
+				validity_code = 1;
+			}
+			break;
+		case 4:
+			if((_current_position + 1) % 9 != 0 && (_current_position + 2) % 9 != 0){
+				check_pos += (_colour * 11);
+				validity_code = 1;
+			}
+			break;
+		case 5:
+			if((_current_position + 1) % 9 != 0){
+				check_pos += (_colour * 19);
+				validity_code = 1;
+			}
+			break;
+		case 6:
+			if(_current_position % 9 != 0){
+				check_pos += (_colour * 17);
+				validity_code = 1;
+			}
+			break;
+		case 7:
+			if((_current_position) % 9 != 0 && (_current_position - 1) % 9 != 0){
+				check_pos += (_colour * 7);
+				validity_code = 1;
+			}
+			break;
+		case 8:
+			if((_current_position) % 9 != 0 && (_current_position - 1) % 9 != 0){
+				check_pos += (_colour * -11);
+				validity_code = 1;
+			}
+			break;
+	}
+
+	//if we have made a valid move in terms of board position, check what occupies the potential dest
+	if(valididty_code != 0 && check_pos <= 80 && check_pos >= 0){
+		if(current_board.get_board()[check_pos] -> get_name() == "-"){
+			validity_code = 1;
+		}
+		else if(current_board.get_board()[check_pos] -> get_colour == _colour){
+			validity_code = 0;
+		}
+		else{ //it is an opposing teams piece
+			validity_code = 2;
+		}
+	}
+
+	move return_move(_current_position, check_pos, validity_code);
+	return return_move;	
 }
 
 

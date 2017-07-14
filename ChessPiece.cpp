@@ -4,7 +4,7 @@
 #include "ChessPiece.h"
 
 
-move::move(int start, int dest): _start(start), _dest(dest) {};
+move::move(int start, int dest, int validity_code): _start(start), _dest(dest), _validity_code(validity_code) {};
 move::~move(){};
 
 //Class constructors
@@ -55,114 +55,87 @@ void ChessPiece::display() const {
 	}
 }
 
-int ChessPiece::check_move_validity(const Board &current_board, int direction, int distance) const{
-	int check_pos = _colour;
+/* 
+	Direction Definition (applies to horses too)
+	From the reference of the white player
+	 1 2 3
+	  \|/
+	4 - - 5
+	  /|\
+	 6 7 8
+
+	 Return values for this function:
+	 1 - 
+*/
+
+move& ChessPiece::check_move_validity(const Board &current_board, int direction, int distance) const{
+	int check_pos = _current_position;
+	int expl_pos = _current_position;
+	int validity_code = 0;
 
 	// decide on direction
 	switch(direction){
-
+		case 1:
+			check_pos += (_colour * distance * -10);
+			expl_position += (_colour * (distance - 1) * -10);
+			break;
+		case 2:
+			check_pos += (_colour * distance * -9);
+			expl_position = 1; //don't want to check edges if we are moving straight
+			break;
+		case 3:
+			check_pos += (_colour * distance * -8);
+			expl_position += (_colour * (distance - 1) * -8);
+			break;
+		case 4:
+			check_pos += (_colour * distance * -1);
+			expl_position += (_colour * (distance - 1) * -1);
+			break;
+		case 5:
+			check_pos += (_colour * distance * 1);
+			expl_position += (_colour * (distance - 1) * 1);
+			break;
+		case 6:
+			check_pos += (_colour * distance * 8);
+			expl_position += (_colour * (distance - 1) * 8);
+			break;
+		case 7:
+			check_pos += (_colour * distance * 9);
+			expl_position = 1; //don't want to check edges if we are moving straight
+			break;
+		case 8:
+			check_pos += (_colour * distance * 10);
+			expl_position += (_colour * (distance - 1) * 10);
+			break;
 	}
 
-	//check within board boundaries
-
-	if(current_board.get_board()[check_pos] -> get_name() == "-"){
-		return 0;
+	//check that we are not wrapping around the board
+	if(expl_position % 9 == 0 || (expl_position +1) % 9 == 0 || check_pos > 80 || check_pos < 0){
+		validity_code = 0;
 	}
-	else if(current_board.get_board()[check_pos] -> get_colour == _colour){
-		return 1;
+	//if we have made a valid move in terms of board position, check what occupies the potential dest
+	else{
+		if(current_board.get_board()[check_pos] -> get_name() == "-"){
+			validity_code = 1;
+		}
+		else if(current_board.get_board()[check_pos] -> get_colour == _colour){
+			validity_code = 0;
+		}
+		else{ //it is an opposing teams piece
+			validity_code = 2;
+		}
 	}
-	else{ //it is an opposing teams piece
-		return 2;
-	}
+	move return_move(_current_position, check_pos,validity_code);
+	return return_move;
 }
-
-
-//implement check empty and check same team
-
 
 
 void Pawn::possible_moves(std::vector<move> &moves, const Board &current_board){
-	if(_current_position <= 71 && _current_position >= 9){
-		if(current_board.get_board()[_current_position+(9*_colour)] -> get_name == "-"){
-			move temp1 (_current_position, _current_position+(9*_colour));
-			moves.push_back(temp1);
-		}
-		if(current_board.get_board()[_current_position+(8*_colour)] -> get_name() != "-" && current_board.get_board()[_current_position+(8*_colour)] -> get_colour() != _colour ){
-			move temp2 (_current_position, _current_position+(8*_colour));
-			moves.push_back(temp2);
-		}
-		if(current_board.get_board()[_current_position+(10*_colour)] -> get_name() != "-" && current_board.get_board()[_current_position+(10*_colour)] -> get_colour() != _colour){
-			move temp3 (_current_position, _current_position+(10*_colour));
-			moves.push_back(temp3);
-		}
-	}
-	else{
-		//this should never occur since the pawn will be converted at this point
-		//but in case it does, there are no possible moves
-		return;
-	}
 
-	if((_current_position <= 17 && _current_position >= 9) || (_current_position >= 63 && _current_position <= 71)){
-		current_board.get_board()[_current_position] -> set_convert(true);
-	}
 }
 
 void Rook::possible_moves(std::vector<move> &moves, const Board &current_board){
-	int i = 1;
-	//check left
-	while(_current_position - (i*_colour) >= 0 && _current_position - (i*_colour) <= 80){
-		move temp (_current_position, _current_position - (i*_colour));
-		moves.push_back(temp);
-		
-		if(current_board.get_board()[_current_position - (i*_colour)] -> get_name == "-"){
-			i++;
-		}
-		else{
-			i=1;
-			break;
-		}
-	}
 
-	//check right
-	while(_current_position + (i*_colour) >= 0 && _current_position + (i*_colour) <= 80){
-		move temp (_current_position, _current_position + (i*_colour));
-		moves.push_back(temp);
-
-		if(current_board.get_board()[_current_position + (i*_colour)] -> get_name == "-"){
-			i++;
-		}
-		else{
-			i=1;
-			break;
-		}
-	}
-	//check down
-	while(_current_position - (i*9*_colour) >= 0 && _current_position - (i*9*_colour) <= 80){
-		move temp (_current_position, _current_position - (i*9*_colour));
-		moves.push_back(temp);
-		
-		if(current_board.get_board()[_current_position - (i*9*_colour)] -> get_name == "-"){
-			i++;
-		}
-		else{
-			i=1;
-			break;
-		}
-	}
-
-	//check up
-	while(_current_position + (i*9*_colour) >= 0 && _current_position + (i*9*_colour) <= 80){
-		move temp (_current_position, _current_position + (i*9*_colour));
-		moves.push_back(temp);
-		
-		if(current_board.get_board()[_current_position + (i*9*_colour)] -> get_name == "-"){
-			i++;
-		}
-		else{
-			i=1;
-			break;
-		}
-	}
 }
 
 void Bishop::possible_moves(std::vector<move> &moves, const Board &current_board){
@@ -175,25 +148,7 @@ void Queen::possible_moves(std::vector<move> &moves, const Board &current_board)
 
 
 void King::possible_moves(std::vector<move> &moves, const Board &current_board){
-	bool safe_move = false;
-	while(safe_move == false){
-		//decide all possible moves
-		if(_current_position - (i*9*_colour) >= 0 && _current_position - (i*9*_colour) <= 80){
-			move temp1 (_current_position, _current_position+(9*_colour));
-			moves.push_back(temp1);
-		}
-		if(_current_position - (i*9*_colour) >= 0 && _current_position - (i*9*_colour) <= 80){
-			move temp2 (_current_position, _current_position+(8*_colour));
-			moves.push_back(temp2);
-		}
-		if(_current_position - (i*9*_colour) >= 0 && _current_position - (i*9*_colour) <= 80){
-			move temp3 (_current_position, _current_position+(10*_colour));
-			moves.push_back(temp3);
-		}
 
-
-		//check if the move is valid
-	}
 }
 
 

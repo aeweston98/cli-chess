@@ -108,7 +108,7 @@ move& ChessPiece::check_move_validity(const Board &current_board, int direction,
 	}
 
 	//check that we are not wrapping around the board
-	if(expl_position % 9 == 0 || (expl_position +1) % 9 == 0 || check_pos > 80 || check_pos < 0){
+	if((expl_position % 9 - 1) == 0 || (expl_position + 1) % 9 == 0 || check_pos > 80 || check_pos < 10){
 		validity_code = 0;
 	}
 	//if we have made a valid move in terms of board position, check what occupies the potential dest
@@ -139,7 +139,7 @@ move& Horse::check_horse_move_validity(const Board &current_board, int direction
 	//check inside the switch whether the move will cause us to wrap around the board
 	switch(direction){
 		case 1:
-			if(_current_position % 9 != 0){
+			if((_current_position - 1) % 9 != 0){
 				check_pos += (_colour * -19);
 				validity_code = 1;
 			}
@@ -169,19 +169,19 @@ move& Horse::check_horse_move_validity(const Board &current_board, int direction
 			}
 			break;
 		case 6:
-			if(_current_position % 9 != 0){
+			if((_current_position - 1) % 9 != 0){
 				check_pos += (_colour * 17);
 				validity_code = 1;
 			}
 			break;
 		case 7:
-			if((_current_position) % 9 != 0 && (_current_position - 1) % 9 != 0){
+			if((_current_position - 2) % 9 != 0 && (_current_position - 1) % 9 != 0){
 				check_pos += (_colour * 7);
 				validity_code = 1;
 			}
 			break;
 		case 8:
-			if((_current_position) % 9 != 0 && (_current_position - 1) % 9 != 0){
+			if((_current_position - 2) % 9 != 0 && (_current_position - 1) % 9 != 0){
 				check_pos += (_colour * -11);
 				validity_code = 1;
 			}
@@ -189,7 +189,7 @@ move& Horse::check_horse_move_validity(const Board &current_board, int direction
 	}
 
 	//if we have made a valid move in terms of board position, check what occupies the potential dest
-	if(validity_code != 0 && check_pos <= 80 && check_pos >= 0){
+	if(validity_code != 0 && check_pos <= 80 && check_pos >= 10){
 		if(current_board.get_board()[check_pos] -> get_name() == "-"){
 			validity_code = 1;
 		}

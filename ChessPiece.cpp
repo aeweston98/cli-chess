@@ -60,9 +60,9 @@ void ChessPiece::display() const {
 	From the reference of the white player
 	 1 2 3
 	  \|/
-	4 - - 5
+	8 - - 4
 	  /|\
-	 6 7 8
+	 7 6 5
 */
 
 move& ChessPiece::check_move_validity(const Board &current_board, int direction, int distance) const{
@@ -84,25 +84,26 @@ move& ChessPiece::check_move_validity(const Board &current_board, int direction,
 			check_pos += (_colour * distance * -8);
 			expl_position += (_colour * (distance - 1) * -8);
 			break;
+
 		case 4:
-			check_pos += (_colour * distance * -1);
-			expl_position += (_colour * (distance - 1) * -1);
-			break;
-		case 5:
 			check_pos += (_colour * distance * 1);
 			expl_position += (_colour * (distance - 1) * 1);
 			break;
-		case 6:
-			check_pos += (_colour * distance * 8);
-			expl_position += (_colour * (distance - 1) * 8);
+		case 5:
+			check_pos += (_colour * distance * 10);
+			expl_position += (_colour * (distance - 1) * 10);
 			break;
-		case 7:
+		case 6:
 			check_pos += (_colour * distance * 9);
 			expl_position = 1; //don't want to check edges if we are moving straight
 			break;
+		case 7:
+			check_pos += (_colour * distance * 8);
+			expl_position += (_colour * (distance - 1) * 8);
+			break;
 		case 8:
-			check_pos += (_colour * distance * 10);
-			expl_position += (_colour * (distance - 1) * 10);
+			check_pos += (_colour * distance * -1);
+			expl_position += (_colour * (distance - 1) * -1);
 			break;
 	}
 
@@ -188,7 +189,7 @@ move& Horse::check_horse_move_validity(const Board &current_board, int direction
 	}
 
 	//if we have made a valid move in terms of board position, check what occupies the potential dest
-	if(valididty_code != 0 && check_pos <= 80 && check_pos >= 0){
+	if(validity_code != 0 && check_pos <= 80 && check_pos >= 0){
 		if(current_board.get_board()[check_pos] -> get_name() == "-"){
 			validity_code = 1;
 		}
@@ -206,24 +207,113 @@ move& Horse::check_horse_move_validity(const Board &current_board, int direction
 
 
 void Pawn::possible_moves(std::vector<move> &moves, const Board &current_board){
+	move temp_move;
 
+	for(int i = 1; i < 4; i++){
+		temp_move = check_move_validity(current_board, i, 1);
+		
+		//empty space directly in front of the pawn
+		if(i % 2 == 0 && temp_move.validity_code == 1){
+			moves.push_back(temp_move);
+		}
+		//opposing piece one forward, diagonal step away
+		else if(i % 2 == 1 && temp_move.validity_code == 2){
+			moves.push_back(temp_move);
+		}
+	}
 }
 
 void Rook::possible_moves(std::vector<move> &moves, const Board &current_board){
+	int j = 1;
+	move temp_move;
 
+	for(int i = 2; i < 9; i += 2){
+		while(true){
+			//check the move
+			temp_move = check_move_validity(current_board, i, j);
+			
+			//if the move is valid, check the next step forward in that direction
+			if(temp_move.validity_code != 0){
+				j++;
+				moves.push_back(temp_move);
+			}
+			else{//reset and go to the next direction
+				j = 1;
+				break;
+			}
+		}
+	}
+}
+
+void Horse::possible_moves(std::vector<move> &moves, const Board &current_board){
+	move temp_move;
+
+	for(int i = 1; i < 9; i++){
+		//check the move
+		temp_move = check_move_validity(current_board, i);
+
+		if(temp_move.validity_code != 0){
+			moves.push_back(temp_move);
+		}
+	}
 }
 
 void Bishop::possible_moves(std::vector<move> &moves, const Board &current_board){
+	int j = 1;
+	move temp_move;
 
+	for(int i = 1; i < 9; i += 2){
+		while(true){
+			//check the move
+			temp_move = check_move_validity(current_board, i, j);
+			
+			//if the move is valid, check the next step forward in that direction
+			if(temp_move.validity_code != 0){
+				j++;
+				moves.push_back(temp_move);
+			}
+			else{ //reset and go to the next direction
+				j = 1;
+				break;
+			}
+		}
+	}
 }
 
 void Queen::possible_moves(std::vector<move> &moves, const Board &current_board){
+	int j = 1;
+	move temp_move;
 
+	for(int i = 1; i < 9; i ++){
+		while(true){
+			temp_move = check_move_validity(current_board, i, j);
+			if(temp_move.validity_code != 0){
+				j++;
+				moves.push_back(temp_move);
+			}
+			else{
+				j = 1;
+				break;
+			}
+		}
+	}
 }
 
-
+//need to give the king some more thought, since you have to check
+//that you are not putting your king into check by moving it
 void King::possible_moves(std::vector<move> &moves, const Board &current_board){
+	for(int i = 1; i < 9; i++){
+		move temp_move = check_move_validity(current_board, i, 1);
 
+		if(temp_move.validity_code != 0){
+			moves.push_back(temp_move);
+		}
+	}
+
+	//implement check to see if King can move here
+	for(int i = 0; i < moves.size(); i++){
+
+	}
 }
 
 

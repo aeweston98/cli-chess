@@ -1,3 +1,5 @@
+//#pragma once
+
 #include <iostream>
 #include <vector>
 
@@ -14,4 +16,4 @@ class Board{
 	private:
 		int _orientation;
 		std::vector<ChessPiece*> _pieces;
-}
+};

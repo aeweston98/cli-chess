@@ -1,5 +1,9 @@
+//#pragma once
+
 #include <string>
 #include <vector>
+
+#include "Board.h"
 
 struct move{
 	move(int start, int dest, int validity_code);
@@ -25,7 +29,7 @@ class ChessPiece{
 		std::string _name;
 		int _current_position;
 		bool _captured = false;
-		int _colour; //-1 for white, 1 for black
+		int _colour; //0 for white, 1 for black
 };
 
 class Pawn:  public ChessPiece{
@@ -33,7 +37,7 @@ class Pawn:  public ChessPiece{
 		Pawn(int current_position, int colour);
 		~Pawn();
 		void possible_moves(std::vector<move> &, const Board &) const override;
-		void set_convert(bool convert){_convert_pawn = convert};
+		void set_convert(bool convert){_convert_pawn = convert;}
 	private:
 		bool _convert_pawn = false;
 };

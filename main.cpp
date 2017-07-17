@@ -5,6 +5,7 @@
 //local includes
 #include "Board.h"
 
+/*
 char select_game_mode(){
 	char user_input;
 
@@ -30,10 +31,14 @@ void state_machine(){
 
 }
 
-
+*/
 
 int main(){
-	state_machine();
+	Board cur_board(1);
+	cur_board.print_board();
+
+	int a = 1 < 2 ? 3:4;
+	std::cout << a;
 
 	return 0;	
 }

@@ -34,11 +34,11 @@ void state_machine(){
 */
 
 int main(){
-	Board cur_board(1);
-	cur_board.print_board();
+	Board * cur_board = new Board(1);
+	//cur_board -> print_board();
 
-	int a = 1 < 2 ? 3:4;
-	std::cout << a;
+	//int a = 1 < 2 ? 3:4;
+	//std::cout << a;
 
 	return 0;	
 }

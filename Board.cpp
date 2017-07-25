@@ -3,6 +3,7 @@
 
 #include "Board.h"
 
+
 Board::Board(int orientation) : _orientation(orientation){
 	//inititalize the board vector, sadly this requires a bit of hard coded setting
 	ChessPiece * temp = nullptr;
@@ -10,47 +11,47 @@ Board::Board(int orientation) : _orientation(orientation){
 	int colour = orientation;
 
 	temp = new Rook(i, colour);
-	_pieces[i] = temp;
+	_pieces.push_back(temp);
 	i++;
 
 	temp = new Horse(i, colour);
-	_pieces[i] = temp;
+	_pieces.push_back(temp);
 	i++;
 
 	temp = new Bishop(i, colour);
-	_pieces[i] = temp;
+	_pieces.push_back(temp);
 	i++;
 
 	temp = new Queen(i, colour);
-	_pieces[i] = temp;
+	_pieces.push_back(temp);
 	i++;
 
 	temp = new King(i, colour);
-	_pieces[i] = temp;
+	_pieces.push_back(temp);
 	i++;
 
 	temp = new Bishop(i, colour);
-	_pieces[i] = temp;
+	_pieces.push_back(temp);
 	i++;
 
 	temp = new Horse(i, colour);
-	_pieces[i] = temp;
+	_pieces.push_back(temp);
 	i++;
 
 	temp = new Rook(i, colour);
-	_pieces[i] = temp;
+	_pieces.push_back(temp);
 	i++;
 
 	for(i = 19; i <= 26; i++){
 		temp = new Pawn(i, colour);
-		_pieces[i] = temp;
+		_pieces.push_back(temp);
 	}
 
 	for(int i = 28; i <= 62; i++){
 		//make sure its not a marker spot (left column of board)
 		if(i % 9 != 0){
 			temp = new EmptySpace(i);
-			_pieces[i] = temp;
+			_pieces.push_back(temp);
 		}
 	}
 
@@ -64,46 +65,49 @@ Board::Board(int orientation) : _orientation(orientation){
 
 	for(i = 64; i <= 71; i++){
 		temp = new Pawn(i, colour);
-		_pieces[i] = temp;
+		_pieces.push_back(temp);
 	}
 
 	i = 73;
 
 	temp = new Rook(i, colour);
-	_pieces[i] = temp;
+	_pieces.push_back(temp);
 	i++;
 
 	temp = new Horse(i, colour);
-	_pieces[i] = temp;
+	_pieces.push_back(temp);
 	i++;
 
 	temp = new Bishop(i,colour);
-	_pieces[i] = temp;
+	_pieces.push_back(temp);
 	i++;
 
 	temp = new Queen(i, colour);
-	_pieces[i] = temp;
+	_pieces.push_back(temp);
 	i++;
 
 	temp = new King(i, colour);
-	_pieces[i] = temp;
+	_pieces.push_back(temp);
 	i++;
 
 	temp = new Bishop(i, colour);
-	_pieces[i] = temp;
+	_pieces.push_back(temp);
 	i++;
 
 	temp = new Horse(i, colour);
-	_pieces[i] = temp;
+	_pieces.push_back(temp);
 	i++;
 
 	temp = new Rook(i, colour);
-	_pieces[i] = temp;
+	_pieces.push_back(temp);
 
 }
 
-Board::~Board(){}
-
+Board::~Board(){
+	for(int i = 0; i < _pieces.size(); i++){
+		delete _pieces[i];
+	}
+}
 
 void Board::print_board(){
 	//print board for user as white orientation

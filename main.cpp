@@ -5,7 +5,7 @@
 //local includes
 #include "Board.h"
 
-/*
+
 char select_game_mode(){
 	char user_input;
 
@@ -14,7 +14,7 @@ char select_game_mode(){
 		std::cout << "Your options for an oppontent are: \n Random Engine (enter r) \n Please select your opponent by inputting a character or input q to quit" << std::endl;
 		std::cin >> user_input;
 	} while(user_input != 'q' && user_input != 'r');
-	return q;
+	return user_input;
 }
 
 void state_machine(){
@@ -24,14 +24,14 @@ void state_machine(){
 
 	int active_player;
 	
-	while(cur_game.get_state != 0){
+	while(cur_game.get_state() != 0){
 		//this loop gets passed over once per turn
 
 	}
 
 }
 
-*/
+
 
 int main(){
 	Board * cur_board = new Board(1);

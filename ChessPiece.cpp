@@ -3,11 +3,7 @@
 #include <iostream>
 
 #include "ChessPiece.h"
-
-
-move::move(){};
-move::move(int start, int dest, int validity_code): _start(start), _dest(dest), _validity_code(validity_code) {};
-move::~move(){};
+#include "move.h"
 
 //Class constructors
 ChessPiece::ChessPiece(std::string name1, std::string name2, int current_position, int colour): _name1(name1),_name2(name2), _current_position(current_position), _colour(colour) {};

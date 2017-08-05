@@ -1,0 +1,5 @@
+
+
+HumanPlayer::HumanPlayer(){};
+
+HumanPlayer::~HumanPlayer(){};

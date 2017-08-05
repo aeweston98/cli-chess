@@ -3,16 +3,7 @@
 #include <string>
 #include <vector>
 
-
-struct move{
-	move();
-	move(int start, int dest, int validity_code);
-	~move();
-	int _start;
-	int _dest;
-	int _validity_code; //for use in check_move_validity method
-};
-typedef struct move move;
+#include "move.h"
 
 class ChessPiece{
 	public:

@@ -1,4 +1,4 @@
-
+#include <string>
 
 #include "Board.h"
 #include "Player.h"
@@ -9,7 +9,8 @@ class GameManager{
 	public:
 		GameManager(char computer_mode, int orientation);
 		~GameManager();
-		get_active_player();
+
+		std::string get_winner();
 
 	private:
 		//the board
@@ -23,4 +24,7 @@ class GameManager{
 		int _game_state;
 		char _computer_mode;
 		int _orientation;
+		int _active_player;
+
+		std::string _winner;
 };

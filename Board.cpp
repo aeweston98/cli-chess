@@ -134,3 +134,19 @@ void Board::get_board(std::vector<ChessPiece*> &pieces){
 	pieces = _pieces;
 	return;
 }
+
+void Board::update_board(move new_move){
+	int current = move.get_current_position();
+	int dest = move.get_new_position();
+
+	ChessPiece * new_marker = new Marker(current, "-");
+
+	//clean up whatever is in the destination spot of the move
+	if(_pieces[dest] != nullptr){
+		delete _pieces[dest];
+		_pieces[dest] = nullptr;
+	}
+
+	_pieces[dest] = _pieces[current];
+	_pieces[current] = new_marker;
+}

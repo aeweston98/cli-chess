@@ -7,6 +7,7 @@ class HumanPlayer : public Player{
 		HumanPlayer();
 		~HumanPlayer();
 
-		bool check_user_move();
+		bool check_user_move(move user_attempt_move);
 	private:
+		
 };

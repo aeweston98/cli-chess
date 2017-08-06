@@ -26,9 +26,10 @@ void state_machine(){
 	
 	while(cur_game.get_state() != 0){
 		//this loop gets passed over once per turn
-
+		cur_game.go();
 	}
 
+	cout << "Winner was " cur_game.get_winner();
 }
 
 
